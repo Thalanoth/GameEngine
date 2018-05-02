@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GameEngine:jar2">
+    <output-path>$PROJECT_DIR$/../GameEngine/out/artifacts/GameEngine_jar2</output-path>
+    <root id="archive" name="GameEngine.jar">
+      <element id="module-output" name="GameEngine" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../GameEngine/lib/jars/lwjgl.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../GameEngine/lib/jars/lwjgl_util.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../GameEngine/lib/jars/slick-util.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../GameEngine/lib/jars/PNGDecoder.jar" path-in-jar="/" />
+      <element id="library" level="project" name="natives" />
+    </root>
+  </artifact>
+</component>

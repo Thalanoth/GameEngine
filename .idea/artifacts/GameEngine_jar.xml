@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GameEngine:jar">
+    <output-path>$PROJECT_DIR$/../GameEngine/out/artifacts/GameEngine_jar</output-path>
+    <root id="archive" name="GameEngine.jar">
+      <element id="library" level="project" name="natives" />
+      <element id="library" level="project" name="jars" />
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/../GameEngine/META-INF/MANIFEST.MF" />
+      </element>
+    </root>
+  </artifact>
+</component>
