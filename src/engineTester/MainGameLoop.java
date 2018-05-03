@@ -67,7 +67,7 @@ public class MainGameLoop {
       LevelObjectLayout level = new LevelObjectLayout();
 
       TexturedModel playerModel = dataObj.getTexturedModelData("selfCharacterAttempt", "selfCharacterAttemptUV");
-      Player player = new Player(playerModel, new Vector3f(512, 5, 0), 0, 180, 0, 1.0f);
+      Player player = new Player(playerModel, new Vector3f(512, 1, -5), 0, 180, 0, 0.5f);
       Camera camera = new Camera(player);
       entities.add(player);
 
@@ -98,12 +98,13 @@ public class MainGameLoop {
       TexturedModel flower = dataObj.getTexturedModelData("grassModel", "flower");
       flower.getTexture().setHasTransparency(true);
       flower.getTexture().setUseFakeLighting(true);
-      TexturedModel fern = new TexturedModel(OBJLoader.loadObjModel("fern", loader), fernTextureAtlas);
-      //TexturedModel fern = dataObj.getTexturedModelData("fern", "fern");
+      //TexturedModel fern = new TexturedModel(OBJLoader.loadObjModel("fern", loader), fernTextureAtlas);
+      TexturedModel fern = dataObj.getTexturedModelData("fern", "fern");
       fern.getTexture().setHasTransparency(true);
       TexturedModel tree = dataObj.getTexturedModelData("tree", "tree");
+      TexturedModel fence = dataObj.getTexturedModelData("fence", "fence1");
 
-      TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrel", loader),
+      TexturedModel barrelModel = new TexturedModel(NormalMappedObjLoader.loadOBJ("barrelEdit", loader),
                                                     new ModelTexture(loader.loadTexture("barrel", "normals")));
       barrelModel.getTexture().setNormalMap(loader.loadTexture("barrelNormal", "normals"));
       barrelModel.getTexture().setShineDamper(10);
@@ -115,49 +116,75 @@ public class MainGameLoop {
       List<Vector2f> coordVectors = level.getObjectMapLocations("objectMapTest", 150, 215, 30);
       for (int i = 0; i < coordVectors.size(); i++) {
          float x = (coordVectors.get(i).x) * 8f;
-         float z = (coordVectors.get(i).y) * -8f;
+         float z = ((1016 + (coordVectors.get(i).y) * -8f) * -1);
          float y = terrain.getHeightOfTerrain(x, z);
-         entities.add(new Entity(lowPolyTree, new Vector3f(x, y, z), 0, 0, 0, 1.9f));
+
+         float minN = 0.0f;
+         float maxN = 180.0f;
+         float randY = random.nextFloat() * (maxN - minN) + minN;
+
+         entities.add(new Entity(lowPolyTree, new Vector3f(x, y, z), 0, randY, 0, 1.0f));
       }
+      //System.out.println("size of coordVectors list(lowpolytree): " + coordVectors.size());
 
       coordVectors = level.getObjectMapLocations("objectMapTest", 35, 255, 60);
       for (int i = 0; i < coordVectors.size(); i++) {
-         float x = (coordVectors.get(i).x);
-         float z = (coordVectors.get(i).y);
+         float x = (coordVectors.get(i).x) * 8f;
+         float z = ((1016 + (coordVectors.get(i).y) * -8f) * -1);
          float y = terrain.getHeightOfTerrain(x, z);
-         entities.add(new Entity(tree, new Vector3f(x, y, z), 0, 0, 0, 1.9f));
+         //System.out.println("height: " + terrain.getHeightOfTerrain(x, z));
+         //System.out.println("x: " + x + " z: " + z);
+         entities.add(new Entity(tree, new Vector3f(x, y, z), 0, 0, 0, 8.0f));
       }
+      //System.out.println("size of coordVectors list(tree): " + coordVectors.size());
 
       coordVectors = level.getObjectMapLocations("objectMapTest", 220, 250, 70);
       for (int i = 0; i < coordVectors.size(); i++) {
          float x = (coordVectors.get(i).x) * 8f;
-         float z = (coordVectors.get(i).y) * -8f;
+         float z = ((1016 + (coordVectors.get(i).y) * -8f) * -1);
          float y = terrain.getHeightOfTerrain(x, z);
-         entities.add(new Entity(fern, 3, new Vector3f(x, y, z), 0, 0, 0, 1.0f));
+         entities.add(new Entity(fern, new Vector3f(x, y, z), 0, 0, 0, 1.0f));
       }
+      //System.out.println("size of coordVectors list(fern): " + coordVectors.size());
 
       coordVectors = level.getObjectMapLocations("objectMapTest", 155, 95, 30);
       for (int i = 0; i < coordVectors.size(); i++) {
          float x = (coordVectors.get(i).x) * 8f;
-         float z = (coordVectors.get(i).y) * -8f;
+         float z = ((1016 + (coordVectors.get(i).y) * -8f) * -1);
          float y = terrain.getHeightOfTerrain(x, z);
          entities.add(new Entity(grass, new Vector3f(x, y, z), 0, 0, 0, 1.9f));
       }
+      //System.out.println("size of coordVectors list(grass): " + coordVectors.size());
+
       coordVectors = level.getObjectMapLocations("objectMapTest", 250, 60, 215);
       for (int i = 0; i < coordVectors.size(); i++) {
-         float x = (coordVectors.get(i).x) * 6.25f;
-         float z = (coordVectors.get(i).y) * -6.25f;
+         float x = (coordVectors.get(i).x) * 8f;
+         float z = ((1016 + (coordVectors.get(i).y) * -8f) * -1);
          float y = terrain.getHeightOfTerrain(x, z);
          entities.add(new Entity(flower, new Vector3f(x, y, z), 0, 0, 0, 1.9f));
       }
+      //System.out.println("size of coordVectors list(flower): " + coordVectors.size());
+
+      coordVectors = level.getObjectMapLocations("objectMapTest", 215, 45, 45);
+      for (int i = 0; i < coordVectors.size(); i++) {
+         float x = (coordVectors.get(i).x) * 8f;
+         float z = ((1016 + (coordVectors.get(i).y) * -8f) * -1);
+         float y = terrain.getHeightOfTerrain(x, z);
+         entities.add(new Entity(fence, new Vector3f(x, y, z), 0, 0, 0, 4.0f));
+      }
+      //System.out.println("size of coordVectors list(fence): " + coordVectors.size());
 
       coordVectors = level.getObjectMapLocations("objectMapTest", 70, 50, 50);
       for (int i = 0; i < coordVectors.size(); i++) {
          float x = (coordVectors.get(i).x) * 8f;
-         float z = (coordVectors.get(i).y) * -8f;
+         float z = ((1016 + (coordVectors.get(i).y) * -8f) * -1);
          float y = terrain.getHeightOfTerrain(x, z);
-         normalMapEntities.add(new Entity(barrelModel, new Vector3f(x, y+10.2f, z), 0, 0, 0, 1.9f));
+         normalMapEntities.add(new Entity(barrelModel, new Vector3f(x, y, z), 0, 0, 0, 0.5f));
       }
+//      System.out.println("size of coordVectors list(barrel): " + coordVectors.size());
+//
+//      System.out.println("size of coordVectors list(finish): " + coordVectors.size());
+//      System.out.println("size of entities list(total): " + entities.size());
 
 
       Light sun = new Light (new Vector3f(200000, 400000, -200000), new Vector3f(1.3f, 1.3f, 1.3f));
@@ -179,18 +206,18 @@ public class MainGameLoop {
       WaterFrameBuffers buffers = new WaterFrameBuffers();
       WaterShader waterShader = new WaterShader();
       WaterRenderer waterRenderer = new WaterRenderer(loader, waterShader, renderer.getProjectionMatrix(), buffers);
-      WaterTile water = new WaterTile(75, -75, 0);
+      WaterTile water = new WaterTile(288, -96, -6);
       waters.add(water);
 
       ParticleMaster.renderParticles(camera);
 
       FontType font = new FontType(loader.loadTexture(("candara"), "fonts"), new File("res/fonts/candara.fnt"));
-      GUIText text = new GUIText("testing, testing, 1, 2, 3 lol!", 3, font, new Vector2f(0.0f, 0.9f), 1f, true);
+      GUIText text = new GUIText("testing, testing, 1, 2, 3 lol", 3, font, new Vector2f(0.0f, 0.9f), 1f, true);
       text.setColor(0.8f, 0.9f, 0.1f);
 
       ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("alphapizza", "particles"), 1);
 
-      ParticleSystem system = new ParticleSystem(particleTexture, 40, 10, 0.01f, 6, 1.0f);
+      ParticleSystem system = new ParticleSystem(particleTexture, 40, 15, 0.02f, 4f, 1.0f);
       system.setLifeError(0.0f);
       system.setDirection(new Vector3f(0, 1, 0), 0.1f);
       system.setSpeedError(0.0f);
@@ -209,8 +236,10 @@ public class MainGameLoop {
          player.move(terrain);
          camera.move();
          picker.update();
+         //System.out.println(picker.getCurrentRay());
 
-         system.generateParticles(player.getPosition());
+         //system.generateParticles(new Vector3f(544, 1, -232));
+         //system.generateParticles(new Vector3f(488, 1, -224));
 
          ParticleMaster.update(camera);
 
@@ -236,7 +265,7 @@ public class MainGameLoop {
 
          multisampleFbo.bindFrameBuffer();
          renderer.renderScene(entities, normalMapEntities, terrains, lights, camera,
-                              new Vector4f(0, 1, 0, 30));
+                              new Vector4f(0, -1, 0, 0));
          waterRenderer.render(waters, camera, sun);
          ParticleMaster.renderParticles(camera);
          multisampleFbo.unbindFrameBuffer();

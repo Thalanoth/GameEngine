@@ -28,7 +28,7 @@ public class DisplayManager {
          //Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
          Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
          Display.create(new PixelFormat().withSamples(8), attribs);
-         Display.setTitle("First Display!");
+         Display.setTitle("Ready.. Game!");
          GL11.glEnable(GL13.GL_MULTISAMPLE);
       }
       catch (LWJGLException e) {
