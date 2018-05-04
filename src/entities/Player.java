@@ -3,9 +3,17 @@ package entities;
 import models.TexturedModel;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.util.Display;
 import org.lwjgl.util.vector.Vector3f;
 import renderEngine.DisplayManager;
 import terrains.Terrain;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 4/23/2018
@@ -27,13 +35,17 @@ public class Player extends Entity {
 
    private static final float TERRAIN_HEIGHT = 0;
 
-   public Player() {
 
+   public Player() {
    }
 
    public Player(TexturedModel model, Vector3f position, float rotX,
                  float rotY, float rotZ, float scale) {
       super(model, position, rotX, rotY, rotZ, scale);
+   }
+
+   public float getCurrentSpeed() {
+      return currentSpeed;
    }
 
    public void move(Terrain terrain) {
@@ -81,10 +93,5 @@ public class Player extends Entity {
          jump();
       }
 
-//      if (Mouse.isButtonDown(1)) {
-//         this.currentSpeed = RUN_SPEED;
-//         if (Mouse.getX() < 640) currentTurnSpeed = TURN_SPEED * Math.abs(640 - Mouse.getX()) * 0.009f;
-//         if (Mouse.getX() > 640) currentTurnSpeed = -TURN_SPEED * Math.abs(640 - Mouse.getX()) * 0.009f;
-//      }
    }
 }

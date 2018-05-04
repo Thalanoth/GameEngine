@@ -3,6 +3,10 @@ package renderEngine;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.DisplayMode;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * 4/22/2018
@@ -20,11 +24,21 @@ public class DisplayManager {
 
    public static void createDisplay() {
 
-      ContextAttribs attribs = new ContextAttribs(3,3).
+//      Canvas displaySurface = new Canvas();
+//      JFrame frame = new JFrame();
+//      frame.setSize(WIDTH, HEIGHT);
+//      frame.add(displaySurface);
+//      frame.setVisible(true);
+//      frame.add(new JButton("gui button test"));
+//      displaySurface.setSize(WIDTH + 100, HEIGHT + 100);
+//      frame.setLocationRelativeTo(null);
+
+      ContextAttribs attribs = new ContextAttribs(3, 3).
                                    withForwardCompatible(true).
                                    withProfileCore(true);
 
       try {
+         //Display.setParent(displaySurface);
          //Display.setDisplayModeAndFullscreen(Display.getDesktopDisplayMode());
          Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
          Display.create(new PixelFormat().withSamples(8), attribs);

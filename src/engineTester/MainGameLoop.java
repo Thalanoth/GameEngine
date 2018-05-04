@@ -15,12 +15,15 @@ import models.TexturedModel;
 import normalMappingObjConverter.NormalMappedObjLoader;
 import objConverter.ModelData;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import particles.Particle;
 import particles.ParticleMaster;
 import particles.ParticleSystem;
 import particles.ParticleTexture;
@@ -123,7 +126,7 @@ public class MainGameLoop {
          float maxN = 180.0f;
          float randY = random.nextFloat() * (maxN - minN) + minN;
 
-         entities.add(new Entity(lowPolyTree, new Vector3f(x, y, z), 0, randY, 0, 1.0f));
+         entities.add(new Entity(lowPolyTree, new Vector3f(x, y, z), 0, randY, 0, 2.0f));
       }
       //System.out.println("size of coordVectors list(lowpolytree): " + coordVectors.size());
 
@@ -195,13 +198,16 @@ public class MainGameLoop {
 //                                             new Vector2f(0.5f, 0.5f));
 
 
+
       GuiTexture healthBar = new GuiTexture(loader.loadTexture("healthBar", "gui"), new Vector2f(-0.7f, -0.9f),
                                                                      new Vector2f(0.25f, 0.1f));
+
+
       guiTextures.add(healthBar);
       //guiTextures.add(shadowMap);
       GuiRenderer guiRenderer = new GuiRenderer(loader);
 
-      MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix());
+      MousePicker picker = new MousePicker(camera, renderer.getProjectionMatrix(), terrain);
 
       WaterFrameBuffers buffers = new WaterFrameBuffers();
       WaterShader waterShader = new WaterShader();
@@ -216,13 +222,22 @@ public class MainGameLoop {
       text.setColor(0.8f, 0.9f, 0.1f);
 
       ParticleTexture particleTexture = new ParticleTexture(loader.loadTexture("alphapizza", "particles"), 1);
+      ParticleTexture orbSpell = new ParticleTexture(loader.loadTexture("cosmic", "particles"), 4);
+      ParticleTexture fireSpell = new ParticleTexture(loader.loadTexture("fire", "particles"), 8);
+
 
       ParticleSystem system = new ParticleSystem(particleTexture, 40, 15, 0.02f, 4f, 1.0f);
+      ParticleSystem orbSpellSystem = new ParticleSystem(orbSpell, 10, 50, 0f, 4f, 2.0f);
+      ParticleSystem fireSpellSystem = new ParticleSystem(fireSpell, 40, 100, 0f, 2f, 10.0f);
+
+
+
       system.setLifeError(0.0f);
       system.setDirection(new Vector3f(0, 1, 0), 0.1f);
       system.setSpeedError(0.0f);
       system.setScaleError(0.0f);
       system.randomizeRotation();
+
 
       Fbo multisampleFbo = new Fbo(Display.getWidth(), Display.getHeight());
       Fbo outputFbo = new Fbo(Display.getWidth(), Display.getHeight(), Fbo.DEPTH_TEXTURE);
@@ -237,6 +252,23 @@ public class MainGameLoop {
          camera.move();
          picker.update();
          //System.out.println(picker.getCurrentRay());
+         Vector3f terrainPoint = picker.getCurrentTerrainPoint();
+         if (Keyboard.isKeyDown(Keyboard.KEY_1)) {
+            orbSpellSystem.setDirection(picker.getCurrentRay(), 0.01f);
+            orbSpellSystem.generateParticles(new Vector3f(player.getPosition().x, player.getPosition().y+5f, player.getPosition().z));
+            //System.out.println("x: " + terrainPoint.x + " y: " + terrainPoint.y + " z: " + terrainPoint.z);
+         }
+         if (Mouse.isButtonDown(1)) {
+            //System.out.println("mouseY: " + Mouse.getY() + " mouseX: " + Mouse.getX());
+            fireSpellSystem.setDirection(picker.getCurrentRay(), 0.01f);
+            fireSpellSystem.generateParticles(new Vector3f(player.getPosition().x, player.getPosition().y+5f, player.getPosition().z));
+         }
+
+         if (Mouse.getX() >= 46 && Mouse.getX() <= 264 && Mouse.getY() >= 40 && Mouse.getY() <= 60) {
+            healthBar.setScale(new Vector2f(0.3f, 0.1f));
+         } else {
+            healthBar.setScale(new Vector2f(0.25f, 0.1f));
+         }
 
          //system.generateParticles(new Vector3f(544, 1, -232));
          //system.generateParticles(new Vector3f(488, 1, -224));
